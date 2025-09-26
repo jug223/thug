@@ -955,3 +955,52 @@
     </script>
 </body>
 </html>
+```html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THUG STORE</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial; }
+        body { background: #1a1a1a; color: white; }
+        .container { max-width: 500px; margin: 50px auto; padding: 20px; }
+        .logo { color: #ff4444; font-size: 2em; text-align: center; margin-bottom: 30px; }
+        .product { background: #2d2d2d; padding: 20px; border-radius: 10px; text-align: center; }
+        .price { color: #ff4444; font-size: 1.5em; margin: 15px 0; }
+        .buy-btn { background: #ff4444; color: white; border: none; padding: 15px 30px; font-size: 1.2em; border-radius: 5px; cursor: pointer; width: 100%; }
+        .test-info { background: #333; padding: 10px; border-radius: 5px; margin: 15px 0; font-size: 0.9em; }
+        .card-element { background: white; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        #card-errors { color: #ff4444; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">THUG STORE</div>
+        
+        <div class="product">
+            <h2>THUG Product</h2>
+            <div class="price">$99.99</div>
+            
+            <div class="test-info">
+                <strong>Тест карта:</strong> 4242 4242 4242 4242<br>
+                <strong>Дата:</strong> 12/34 <strong>CVC:</strong> 123
+            </div>
+
+            <form id="payment-form">
+                <input type="email" id="email" placeholder="Email" required style="width: 100%; padding: 10px; margin: 10px 0;">
+                
+                <div class="card-element" id="card-element"></div>
+                <div id="card-errors"></div>
+                
+                <button type="submit" class="buy-btn" id="submit-btn">
+                    ОПЛАТИТЬ $99.99
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const stripe = Stripe('pk_test_51P8gL02Jd8v8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8
