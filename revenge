@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>phunky photography - One Year Anniversary</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #f0e6d2;
+            background-image: 
+                radial-gradient(#d4c9ac 1px, transparent 1px),
+                radial-gradient(#d4c9ac 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            color: #000;
+            line-height: 1.4;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .flyer {
+            width: 100%;
+            max-width: 500px;
+            background-color: #fff;
+            border: 3px solid #000;
+            padding: 30px;
+            box-shadow: 8px 8px 0px #ff66cc,
+                        16px 16px 0px #000;
+            position: relative;
+            transform: rotate(0.5deg);
+        }
+        
+        .flyer::before,
+        .flyer::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #000;
+        }
+        
+        .flyer::before {
+            top: -3px;
+            left: -3px;
+            border-right: none;
+            border-bottom: none;
+        }
+        
+        .flyer::after {
+            bottom: -3px;
+            right: -3px;
+            border-left: none;
+            border-top: none;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .main-title {
+            font-family: 'Comic Sans MS', cursive;
+            font-weight: bold;
+            font-size: 2.8em;
+            margin: 0;
+            line-height: 0.9;
+            color: #ff3366;
+            text-shadow: 2px 2px 0px #000;
+        }
+        
+        .subtitle {
+            font-style: italic;
+            font-weight: bold;
+            font-size: 1.4em;
+            margin: 5px 0 0 0;
+            letter-spacing: 1px;
+        }
+        
+        .announcement {
+            font-size: 1.1em;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .highlight {
+            background-color: #ffff66;
+            padding: 0 3px;
+            font-weight: bold;
+        }
+        
+        .play-together {
+            text-align: center;
+            font-size: 1.3em;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        
+        .footer {
+            text-align: right;
+            font-size: 0.9em;
+            margin-top: 25px;
+            border-top: 1px dashed #000;
+            padding-top: 10px;
+        }
+        
+        .date {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="flyer">
+        <div class="header">
+            <h1 class="main-title">phunky<br>photography</h1>
+            <p class="subtitle">one year anniversary</p>
+        </div>
+
+        <div class="announcement">
+            <p>It has been<br>
+            <span class="highlight">mearly a year</span><br>
+            since we began...<br>
+            and now its time<br>
+            to come and</p>
+
+            <div class="play-together">
+                all<br>
+                play<br>
+                together
+            </div>
+
+            <p>one more time<br>
+            <span style="font-style: italic;">like stimely</span> my 20th, 2000</p>
+        </div>
+
+        <div class="footer">
+            <div class="date">like stimely my 20th, 2000</div>
+        </div>
+    </div>
+</body>
+</html>
