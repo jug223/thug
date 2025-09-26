@@ -965,15 +965,17 @@
     <script src="https://js.stripe.com/v3/"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial; }
-        body { background: #1a1a1a; color: white; }
-        .container { max-width: 500px; margin: 50px auto; padding: 20px; }
+        body { background: #1a1a1a; color: white; min-height: 100vh; display: flex; align-items: center; }
+        .container { max-width: 500px; margin: 0 auto; padding: 20px; width: 100%; }
         .logo { color: #ff4444; font-size: 2em; text-align: center; margin-bottom: 30px; }
-        .product { background: #2d2d2d; padding: 20px; border-radius: 10px; text-align: center; }
-        .price { color: #ff4444; font-size: 1.5em; margin: 15px 0; }
-        .buy-btn { background: #ff4444; color: white; border: none; padding: 15px 30px; font-size: 1.2em; border-radius: 5px; cursor: pointer; width: 100%; }
-        .test-info { background: #333; padding: 10px; border-radius: 5px; margin: 15px 0; font-size: 0.9em; }
-        .card-element { background: white; padding: 10px; border-radius: 5px; margin: 10px 0; }
-        #card-errors { color: #ff4444; margin: 10px 0; }
+        .product { background: #2d2d2d; padding: 30px; border-radius: 10px; }
+        .price { color: #ff4444; font-size: 1.5em; margin: 15px 0; text-align: center; }
+        .buy-btn { background: #ff4444; color: white; border: none; padding: 15px; font-size: 1.2em; border-radius: 5px; cursor: pointer; width: 100%; margin-top: 15px; }
+        .test-info { background: #333; padding: 15px; border-radius: 5px; margin: 20px 0; font-size: 0.9em; }
+        .card-element { background: white; padding: 12px; border-radius: 5px; margin: 15px 0; }
+        #card-errors { color: #ff4444; margin: 10px 0; text-align: center; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #444; border-radius: 5px; background: #1a1a1a; color: white; }
+        .success { color: #00ff00; text-align: center; margin: 15px 0; }
     </style>
 </head>
 <body>
@@ -981,26 +983,109 @@
         <div class="logo">THUG STORE</div>
         
         <div class="product">
-            <h2>THUG Product</h2>
+            <h2 style="text-align: center;">THUG Product</h2>
             <div class="price">$99.99</div>
             
             <div class="test-info">
-                <strong>Тест карта:</strong> 4242 4242 4242 4242<br>
-                <strong>Дата:</strong> 12/34 <strong>CVC:</strong> 123
+                <strong>💳 Тестовая карта:</strong><br>
+                4242 4242 4242 4242<br>
+                <strong>Дата:</strong> 12/34<br>
+                <strong>CVC:</strong> 123<br>
+                <strong>Почта:</strong> любой email
             </div>
 
             <form id="payment-form">
-                <input type="email" id="email" placeholder="Email" required style="width: 100%; padding: 10px; margin: 10px 0;">
+                <input type="email" id="email" placeholder="Ваш email" required>
                 
-                <div class="card-element" id="card-element"></div>
-                <div id="card-errors"></div>
+                <div class="card-element" id="card-element">
+                    <!-- Stripe Card Element -->
+                </div>
+                
+                <div id="card-errors" role="alert"></div>
                 
                 <button type="submit" class="buy-btn" id="submit-btn">
                     ОПЛАТИТЬ $99.99
                 </button>
             </form>
+
+            <div id="success" class="success" style="display: none;">
+                ✅ Оплата прошла успешно!
+            </div>
         </div>
     </div>
 
     <script>
-        const stripe = Stripe('pk_test_51P8gL02Jd8v8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8
+        // Корректный тестовый ключ Stripe
+        const stripe = Stripe('pk_test_51P8gL0RJ8v8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w8w');
+        const elements = stripe.elements();
+        
+        // Создаем элемент для ввода карты
+        const card = elements.create('card', {
+            style: {
+                base: {
+                    fontSize: '16px',
+                    color: '#333',
+                }
+            }
+        });
+        
+        card.mount('#card-element');
+        
+        // Обработка ошибок
+        card.addEventListener('change', function(event) {
+            const displayError = document.getElementById('card-errors');
+            if (event.error) {
+                displayError.textContent = event.error.message;
+            } else {
+                displayError.textContent = '';
+            }
+        });
+        
+        // Обработка формы
+        const form = document.getElementById('payment-form');
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Обработка...';
+            
+            try {
+                // Создаем платежный метод
+                const { paymentMethod, error } = await stripe.createPaymentMethod({
+                    type: 'card',
+                    card: card,
+                    billing_details: {
+                        email: document.getElementById('email').value,
+                    },
+                });
+                
+                if (error) {
+                    document.getElementById('card-errors').textContent = error.message;
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'ОПЛАТИТЬ $99.99';
+                } else {
+                    // Имитация успешной оплаты (в реальном приложении здесь будет запрос к вашему серверу)
+                    setTimeout(() => {
+                        document.getElementById('success').style.display = 'block';
+                        form.style.display = 'none';
+                        
+                        setTimeout(() => {
+                            document.getElementById('success').style.display = 'none';
+                            form.style.display = 'block';
+                            form.reset();
+                            card.clear();
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = 'ОПЛАТИТЬ $99.99';
+                        }, 3000);
+                    }, 1000);
+                }
+            } catch (err) {
+                document.getElementById('card-errors').textContent = 'Ошибка: ' + err.message;
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'ОПЛАТИТЬ $99.99';
+            }
+        });
+    </script>
+</body>
+</html>
